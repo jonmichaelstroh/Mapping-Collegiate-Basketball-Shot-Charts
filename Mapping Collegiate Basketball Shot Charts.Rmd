@@ -28,33 +28,38 @@ trice_shots_2020 <- purrr::map_df(wisconsin_schedule_2020$game_id,
                           gamezoneR::gamezone_cbb_pbp, sub_parse = F) %>% filter(shooter == "D'Mitrik Trice")
 ```
 
+#### Determine Quadrant
+
+```{r Check Quadrants}
+trice_shots_2020 <- trice_shots_2020 %>% mutate(shot_quadrant = factor(if_else(loc_x >= 21 & loc_x <= 25 & ((loc_y - 5.25)^2 + (25 - loc_x)^2 <= 16), "Q1", if_else(loc_x > 25 & loc_x <= 29 & ((loc_y - 5.25)^2 + (loc_x - 25)^2 <= 16), "Q1", if_else(loc_x >= 19 & loc_x <= 31 & loc_y <= 19, "Q2", if_else(loc_x <= 12.5 & three_pt == TRUE, "Q5", if_else(loc_x > 12.5 & loc_x < 37.5 & three_pt == TRUE, "Q6", if_else(loc_x >= 37.5 & three_pt == TRUE, "Q7", if_else(loc_x <= 25, "Q3", if_else(loc_x > 25, "Q4", "NA"))))))))))
+```
+
+#### The Number of Shots for each Quadrant
+
+```{r Total by Quadrant}
+trice_shot_quadrants <- table(trice_shots_2020$shot_quadrant, trice_shots_2020$shot_outcome)
+
+trice_shot_quadrants
+```
+
+```{r Percentages by Quadrant}
+trice_quadrant_percentages <- as.data.frame.matrix(round(prop.table(trice_shot_quadrants, 1), digits = 2) * 100)
+
+trice_quadrant_percentages <- trice_quadrant_percentages %>% mutate(Quadrant = 1:nrow(trice_quadrant_percentages)) %>% mutate(made = paste0(made,"%"))
+
+trice_quadrant_percentages
+```
+
+
 ```{r Trice's Shot Chart}
 gamezoneR::base_court +
-  geom_point(data = trice_shots_2020, aes(loc_x, loc_y, color = shot_outcome), alpha = 0.6) + geom_text(data = trice_quadrant_percentages, x = 24, y = 5.25, aes(label = made)) + geom_vline(xintercept = 25, color = 'red') + geom_vline(xintercept = 12.5, color = 'red') + geom_vline(xintercept = 37.5, color = 'red') + geom_vline(xintercept = 19, color = 'blue') + geom_vline(xintercept = 31, color = 'blue') + geom_hline(yintercept = 19, color = 'blue') + geom_hline(yintercept = 9.25, color = 'green') + 
-theme(legend.spacing.x = grid::unit(0, 'cm'),  plot.title = element_text(face = "bold", hjust = 0.5, size = 25/.pt, margin = margin(0, 0, 5, 0)), plot.subtitle = element_text(face = "italic", hjust = 0.5, size = 18/.pt), legend.title = element_text(size = 20/.pt, face = "bold"), 
+  geom_point(data = trice_shots_2020, aes(loc_x, loc_y, color = shot_outcome), alpha = 0.6) + geom_text(data = trice_quadrant_percentages, x = 25, y = 7.85, fontface = "bold", color = "red", size = 3, aes(label = ifelse(Quadrant == 1, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 25, y = 17, fontface = "bold", color = "red", size = 3, aes(label = ifelse(Quadrant == 2, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 25, y = 32, fontface = "bold", color = "red", size = 3, aes(label = ifelse(Quadrant == 6, as.character(made),"")))  + geom_text(data = trice_quadrant_percentages, x = 6, y = 25, fontface = "bold", color = "red", size = 3, aes(label = ifelse(Quadrant == 5, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 44, y = 25, fontface = "bold", color = "red", size = 3, aes(label = ifelse(Quadrant == 7, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 12.5, y = 15, fontface = "bold", color = "red", size = 3, aes(label = ifelse(Quadrant == 4, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 37.5, y = 15, fontface = "bold", color = "red", size = 3, aes(label = ifelse(Quadrant == 5, as.character(made),""))) + theme(legend.spacing.x = grid::unit(0, 'cm'),  plot.title = element_text(face = "bold", hjust = 0.5, size = 25/.pt, margin = margin(0, 0, 5, 0)), plot.subtitle = element_text(face = "italic", hjust = 0.5, size = 18/.pt), legend.title = element_text(size = 20/.pt, face = "bold"), 
 legend.text = element_text(size = 20/.pt), legend.margin = margin(0, 0, 0, 0),
 legend.position = 'bottom', legend.box.margin = margin(-35, 0, 0, 0),  plot.margin = margin(5, 0, 5, 0)) + 
 labs(title = "D'Mitrick Trice's Shot Chart", subtitle = "2020-21 Season", color = "Outcome", caption = "Chart: @jonmichaelstroh | Data: @gamezoneR")
 ```
 
 
-#### Determine Quadrant
-
-
-```{r Check Quadrants}
-trice_shots_2020 <- trice_shots_2020 %>% mutate(shot_quadrant = factor(if_else(loc_x >= 21 & loc_x <= 25 & ((loc_y - 5.25)^2 + (25 - loc_x)^2 <= 16), "Q1", if_else(loc_x > 25 & loc_x <= 29 & ((loc_y - 5.25)^2 + (loc_x - 25)^2 <= 16), "Q1", if_else(loc_x >= 19 & loc_x <= 31 & loc_y <= 19, "Q2", if_else(loc_x <= 12.5 & three_pt == TRUE, "Q5", if_else(loc_x > 12.5 & loc_x < 37.5 & three_pt == TRUE, "Q6", if_else(loc_x >= 37.5 & three_pt == TRUE, "Q7", if_else(loc_x <= 25, "Q3", if_else(loc_x > 25, "Q4", "NA"))))))))))
-```
-
-The Number of Shots for each Quadrant:
-
-```{r Total by Quadrant}
-trice_shot_quadrants <- table(trice_shots_2020$shot_quadrant, trice_shots_2020$shot_outcome)
-```
-
-```{r}
-trice_quadrant_percentages <- as.data.frame.matrix(round(prop.table(trice_shot_quadrants, 1), digits = 3) * 100, row.names = "Quadrant")
-view(trice_quadrant_percentages)
-```
 
 
 

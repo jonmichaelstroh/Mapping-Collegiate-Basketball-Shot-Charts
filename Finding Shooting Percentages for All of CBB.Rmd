@@ -1,0 +1,13 @@
+---
+title: "Finding Shooting Percentages for All of CBB"
+author: '@jonmichaelstroh'
+date: "5/9/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+                      echo = TRUE, dpi = 300, cache.lazy = FALSE,
+                      tidy = "styler")
+```
+
