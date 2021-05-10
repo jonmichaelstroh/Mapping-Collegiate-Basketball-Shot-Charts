@@ -17,6 +17,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE,
 library(tidyverse)
 library(dplyr)
 library(gamezoneR)
+library(extrafont)
 ```
 
 ```{r Wisconsin schedule}
@@ -56,14 +57,24 @@ trice_quadrant_percentages <- trice_quadrant_percentages %>% mutate(made = round
 trice_quadrant_percentages
 ```
 
+```{r Randomize Close Shots}
+trice_shots_2020_test <- trice_shots_2020 %>% mutate(loc_x = if_else(loc_x == 25 & loc_y == 5.25, loc_x + runif(1, min = -1, max = 1), loc_x))
+
+trice_shots_2020_test
+```
+
+
+#### Shot Chart
 
 ```{r Trice's Shot Chart}
 gamezoneR::base_court +
-  geom_point(data = trice_shots_2020, aes(loc_x, loc_y, color = shot_outcome), alpha = 0.6) + geom_text(data = trice_quadrant_percentages, x = 25, y = 7.85, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 1, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 22.1, y = 15.5, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 2, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 28, y = 31, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 6, as.character(made),"")))  + geom_text(data = trice_quadrant_percentages, x = 6, y = 25, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 5, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 45, y = 24, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 7, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 12.5, y = 15, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 4, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 37.5, y = 15, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 5, as.character(made),""))) + theme(legend.spacing.x = grid::unit(0, 'cm'),  plot.title = element_text(face = "bold", hjust = 0.5, size = 25/.pt, margin = margin(0, 0, 5, 0)), plot.subtitle = element_text(face = "italic", hjust = 0.5, size = 18/.pt), legend.title = element_text(size = 20/.pt, face = "bold"), 
+  geom_point(data = trice_shots_2020, aes(loc_x, loc_y, color = shot_outcome), alpha = 0.6) + geom_text(data = trice_quadrant_percentages, x = 25, y = 7.85, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 1, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 22, y = 15.5, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 2, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 28, y = 31, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 6, as.character(made),"")))  + geom_text(data = trice_quadrant_percentages, x = 6, y = 25, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 5, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 45, y = 24, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 7, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 12.5, y = 15, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 4, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 37.5, y = 15, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 5, as.character(made),""))) + theme(text=element_text(size=16,  family="Myanmar Text"), legend.spacing.x = grid::unit(0, 'cm'),  plot.title = element_text(face = "bold", hjust = 0.5, size = 25/.pt, margin = margin(0, 0, 5, 0)), plot.subtitle = element_text(face = "italic", hjust = 0.5, size = 25/.pt), legend.title = element_text(size = 20/.pt, face = "bold"), 
 legend.text = element_text(size = 20/.pt), legend.margin = margin(0, 0, 0, 0),
 legend.position = 'bottom', legend.box.margin = margin(-35, 0, 0, 0),  plot.margin = margin(5, 0, 5, 0)) + 
 labs(title = "D'Mitrick Trice's Shot Chart", subtitle = "2020-21 Season", color = "Outcome", caption = "Chart: @jonmichaelstroh | Data: @gamezoneR")
 ```
+
+
 
 
 
