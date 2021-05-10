@@ -1,5 +1,5 @@
 ---
-title: "Finding Shooting Percentages for All of CBB"
+title: "Finding Shooting Percentages for All of the Big Ten"
 author: '@jonmichaelstroh'
 date: "`r Sys.Date()`"
 output: html_document
@@ -50,8 +50,6 @@ big_ten_schedule <- multiFull <- merge(merge(merge(merge(merge(merge(merge(merge
   pennst_schedule_2020, all = TRUE),
   nebraska_schedule_2020, all = TRUE),
   northwestern_schedule_2020, all = TRUE)
-
-view(big_ten_schedule)
 ```
 
 ```{r Shot data for Big Ten}
@@ -73,37 +71,116 @@ big_ten_shot_quadrants
 big_ten_shot_quadrant_percentages_2020 <- as.data.frame.matrix(round(prop.table(big_ten_shot_quadrants, 1), digits = 5) * 100)
 
 big_ten_shot_quadrant_percentages_2020 <- big_ten_shot_quadrant_percentages_2020 %>% mutate(Quadrant = 1:nrow(big_ten_shot_quadrant_percentages_2020)) %>% mutate(made = paste0(made,"%"))
-
-big_ten_shot_quadrant_percentages_2020
 ```
 
 
 ```{r Total by Quadrant by Shooter}
 big_ten_shot_quadrants_players <- as.data.frame.matrix(table(big_ten_shot_data$shooter, big_ten_shot_data$shot_quadrant))
-
-big_ten_shot_quadrants_players
 ```
+
+#### Quadrant 1
 
 ```{r Shooting Percentages Q1}
 big_ten_shot_data_quadrant1 <- big_ten_shot_data %>% filter(shot_quadrant == "Q1")
 
 big_ten_shot_data_quadrant1_players <- as.data.frame.matrix(table(big_ten_shot_data_quadrant1$shooter, big_ten_shot_data_quadrant1$shot_outcome)) %>% filter(made + missed >= 15) %>% mutate(shooting_percent = (made/(made + missed)) * 100)
-
-view(big_ten_shot_data_quadrant1_players)
 ```
 
 ```{r Shooting Percentages Q1 Distribution}
 ggplot(data = big_ten_shot_data_quadrant1_players, aes(x = shooting_percent)) + 
   geom_histogram()
 
-round(quantile(big_ten_shot_data_quadrant1_players$shooting_percent, c(.2, .4, .6, .8)), digits = 0)
+round(quantile(big_ten_shot_data_quadrant1_players$shooting_percent, c(.2, .4, .6, .8)), digits = 3)
 ```
 
+#### Quadrant 2
 
+```{r Shooting Percentages Q2}
+big_ten_shot_data_quadrant2 <- big_ten_shot_data %>% filter(shot_quadrant == "Q2")
 
+big_ten_shot_data_quadrant2_players <- as.data.frame.matrix(table(big_ten_shot_data_quadrant2$shooter, big_ten_shot_data_quadrant2$shot_outcome)) %>% filter(made + missed >= 5) %>% mutate(shooting_percent = (made/(made + missed)) * 100)
+```
 
+```{r Shooting Percentages Q2 Distribution}
+ggplot(data = big_ten_shot_data_quadrant2_players, aes(x = shooting_percent)) + 
+  geom_histogram()
 
+round(quantile(big_ten_shot_data_quadrant2_players$shooting_percent, c(.2, .4, .6, .8)), digits = 3)
+```
 
+#### Quadrant 3
 
+```{r Shooting Percentages Q3}
+big_ten_shot_data_quadrant3 <- big_ten_shot_data %>% filter(shot_quadrant == "Q3")
+
+big_ten_shot_data_quadrant3_players <- as.data.frame.matrix(table(big_ten_shot_data_quadrant3$shooter, big_ten_shot_data_quadrant3$shot_outcome)) %>% filter(made + missed >= 5) %>% mutate(shooting_percent = (made/(made + missed)) * 100)
+```
+
+```{r Shooting Percentages Q3 Distribution}
+ggplot(data = big_ten_shot_data_quadrant3_players, aes(x = shooting_percent)) + 
+  geom_histogram()
+
+round(quantile(big_ten_shot_data_quadrant3_players$shooting_percent, c(.2, .4, .6, .8)), digits = 3)
+```
+
+#### Quadrant 4
+
+```{r Shooting Percentages Q4}
+big_ten_shot_data_quadrant4 <- big_ten_shot_data %>% filter(shot_quadrant == "Q4")
+
+big_ten_shot_data_quadrant4_players <- as.data.frame.matrix(table(big_ten_shot_data_quadrant4$shooter, big_ten_shot_data_quadrant4$shot_outcome)) %>% filter(made + missed >= 5) %>% mutate(shooting_percent = (made/(made + missed)) * 100)
+```
+
+```{r Shooting Percentages Q4 Distribution}
+ggplot(data = big_ten_shot_data_quadrant4_players, aes(x = shooting_percent)) + 
+  geom_histogram()
+
+round(quantile(big_ten_shot_data_quadrant4_players$shooting_percent, c(.2, .4, .6, .8)), digits = 3)
+```
+
+#### Quadrant 5
+
+```{r Shooting Percentages Q5}
+big_ten_shot_data_quadrant5 <- big_ten_shot_data %>% filter(shot_quadrant == "Q5")
+
+big_ten_shot_data_quadrant5_players <- as.data.frame.matrix(table(big_ten_shot_data_quadrant5$shooter, big_ten_shot_data_quadrant5$shot_outcome)) %>% filter(made + missed >= 5) %>% mutate(shooting_percent = (made/(made + missed)) * 100)
+```
+
+```{r Shooting Percentages Q5 Distribution}
+ggplot(data = big_ten_shot_data_quadrant5_players, aes(x = shooting_percent)) + 
+  geom_histogram()
+
+round(quantile(big_ten_shot_data_quadrant5_players$shooting_percent, c(.2, .4, .6, .8)), digits = 3)
+```
+
+#### Quadrant 6
+
+```{r Shooting Percentages Q6}
+big_ten_shot_data_quadrant6 <- big_ten_shot_data %>% filter(shot_quadrant == "Q6")
+
+big_ten_shot_data_quadrant6_players <- as.data.frame.matrix(table(big_ten_shot_data_quadrant6$shooter, big_ten_shot_data_quadrant6$shot_outcome)) %>% filter(made + missed >= 5) %>% mutate(shooting_percent = (made/(made + missed)) * 100)
+```
+
+```{r Shooting Percentages Q6 Distribution}
+ggplot(data = big_ten_shot_data_quadrant6_players, aes(x = shooting_percent)) + 
+  geom_histogram()
+
+round(quantile(big_ten_shot_data_quadrant6_players$shooting_percent, c(.2, .4, .6, .8)), digits = 3)
+```
+
+#### Quadrant 7
+
+```{r Shooting Percentages Q7}
+big_ten_shot_data_quadrant7 <- big_ten_shot_data %>% filter(shot_quadrant == "Q7")
+
+big_ten_shot_data_quadrant7_players <- as.data.frame.matrix(table(big_ten_shot_data_quadrant7$shooter, big_ten_shot_data_quadrant7$shot_outcome)) %>% filter(made + missed >= 5) %>% mutate(shooting_percent = (made/(made + missed)) * 100)
+```
+
+```{r Shooting Percentages Q6 Distribution}
+ggplot(data = big_ten_shot_data_quadrant7_players, aes(x = shooting_percent)) + 
+  geom_histogram()
+
+round(quantile(big_ten_shot_data_quadrant7_players$shooting_percent, c(.2, .4, .6, .8)), digits = 3)
+```
 
 

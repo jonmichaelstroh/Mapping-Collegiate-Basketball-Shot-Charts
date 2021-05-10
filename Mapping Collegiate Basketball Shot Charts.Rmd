@@ -1,5 +1,5 @@
 ---
-title: "Mapping Collegiate Basketball Shot Charts"
+title: "Mapping Collegiate Basketball Shot Charts Trial Run"
 author: '@jonmichaelstroh'
 date: "`r Sys.Date()`"
 output: html_document
@@ -43,13 +43,15 @@ trice_shot_quadrants
 ```
 
 ```{r Percentages by Quadrant}
-trice_quadrant_percentages <- as.data.frame.matrix(round(prop.table(trice_shot_quadrants, 1), digits = 2) * 100)
+trice_quadrant_percentages <- as.data.frame.matrix(prop.table(trice_shot_quadrants, 1) * 100)
 
 trice_quadrant_percentages <- trice_quadrant_percentages %>% mutate(Quadrant = 1:nrow(trice_quadrant_percentages))
 
-trice_quadrant_percentages <- trice_quadrant_percentages %>% mutate(color = if_else(Quadrant == 1,if_else(made < 52, "royalblue3", if_else(made < 60, "steelblue1", if_else(made < 63, "gray50", if_else(made < 71, "red3", "red")))), "NA"))
+trice_quadrant_percentages <- trice_quadrant_percentages %>% mutate(color = if_else(Quadrant == 1,if_else(made < 51.834, "#1a1aff", if_else(made < 59.603, "#0099ff", if_else(made < 63.179, "#737373", if_else(made < 70.857 , "#ff8080", "#ff0000")))), if_else(Quadrant == 2,if_else(made < 33.333, "#1a1aff", if_else(made < 41.504, "#0099ff", if_else(made < 45.758, "#737373", if_else(made < 52.891 , "#ff8080", "#ff0000")))), if_else(Quadrant == 3,if_else(made < 21.778, "#1a1aff", if_else(made < 33.333, "#0099ff", if_else(made < 40.000, "#737373", if_else(made < 54.545 , "#ff8080", "#ff0000")))), if_else(Quadrant == 4,if_else(made < 24.444, "#1a1aff", if_else(made < 34.846, "#0099ff", if_else(made < 43.492, "#737373", if_else(made < 53.186, "#ff8080", "#ff0000")))), if_else(Quadrant == 5,if_else(made < 23.754, "#1a1aff", if_else(made < 32.800, "#0099ff", if_else(made < 37.500, "#737373", if_else(made < 48.000, "#ff8080", "#ff0000")))), if_else(Quadrant == 6,if_else(made < 25.000, "#1a1aff", if_else(made < 31.139, "#0099ff", if_else(made < 37.368, "#737373", if_else(made < 47.680, "#ff8080", "#ff0000")))), if_else(Quadrant == 7,if_else(made < 22.063, "#1a1aff", if_else(made < 30.462, "#0099ff", if_else(made < 36.364, "#737373", if_else(made < 40.333 , "#ff8080", "#ff0000")))), "NA"))))))))
 
-trice_quadrant_percentages <- trice_quadrant_percentages %>% mutate(made = paste0(made,"%"))
+
+
+trice_quadrant_percentages <- trice_quadrant_percentages %>% mutate(made = round(made), digits = 0) %>% mutate(made = paste0(made,"%"))
 
 trice_quadrant_percentages
 ```
@@ -57,7 +59,7 @@ trice_quadrant_percentages
 
 ```{r Trice's Shot Chart}
 gamezoneR::base_court +
-  geom_point(data = trice_shots_2020, aes(loc_x, loc_y, color = shot_outcome), alpha = 0.6) + geom_text(data = trice_quadrant_percentages, x = 25, y = 7.85, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 1, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 25, y = 17, fontface = "bold", color = "red", size = 3, aes(label = ifelse(Quadrant == 2, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 25, y = 32, fontface = "bold", color = "red", size = 3, aes(label = ifelse(Quadrant == 6, as.character(made),"")))  + geom_text(data = trice_quadrant_percentages, x = 6, y = 25, fontface = "bold", color = "red", size = 3, aes(label = ifelse(Quadrant == 5, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 44, y = 25, fontface = "bold", color = "red", size = 3, aes(label = ifelse(Quadrant == 7, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 12.5, y = 15, fontface = "bold", color = "red", size = 3, aes(label = ifelse(Quadrant == 4, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 37.5, y = 15, fontface = "bold", color = "red", size = 3, aes(label = ifelse(Quadrant == 5, as.character(made),""))) + theme(legend.spacing.x = grid::unit(0, 'cm'),  plot.title = element_text(face = "bold", hjust = 0.5, size = 25/.pt, margin = margin(0, 0, 5, 0)), plot.subtitle = element_text(face = "italic", hjust = 0.5, size = 18/.pt), legend.title = element_text(size = 20/.pt, face = "bold"), 
+  geom_point(data = trice_shots_2020, aes(loc_x, loc_y, color = shot_outcome), alpha = 0.6) + geom_text(data = trice_quadrant_percentages, x = 25, y = 7.85, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 1, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 22.1, y = 15.5, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 2, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 28, y = 31, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 6, as.character(made),"")))  + geom_text(data = trice_quadrant_percentages, x = 6, y = 25, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 5, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 45, y = 24, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 7, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 12.5, y = 15, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 4, as.character(made),""))) + geom_text(data = trice_quadrant_percentages, x = 37.5, y = 15, fontface = "bold", color = trice_quadrant_percentages$color, size = 3, aes(label = ifelse(Quadrant == 5, as.character(made),""))) + theme(legend.spacing.x = grid::unit(0, 'cm'),  plot.title = element_text(face = "bold", hjust = 0.5, size = 25/.pt, margin = margin(0, 0, 5, 0)), plot.subtitle = element_text(face = "italic", hjust = 0.5, size = 18/.pt), legend.title = element_text(size = 20/.pt, face = "bold"), 
 legend.text = element_text(size = 20/.pt), legend.margin = margin(0, 0, 0, 0),
 legend.position = 'bottom', legend.box.margin = margin(-35, 0, 0, 0),  plot.margin = margin(5, 0, 5, 0)) + 
 labs(title = "D'Mitrick Trice's Shot Chart", subtitle = "2020-21 Season", color = "Outcome", caption = "Chart: @jonmichaelstroh | Data: @gamezoneR")
