@@ -77,8 +77,26 @@ big_ten_shot_quadrant_percentages_2020 <- big_ten_shot_quadrant_percentages_2020
 big_ten_shot_quadrant_percentages_2020
 ```
 
-```{r}
 
+```{r Total by Quadrant by Shooter}
+big_ten_shot_quadrants_players <- as.data.frame.matrix(table(big_ten_shot_data$shooter, big_ten_shot_data$shot_quadrant))
+
+big_ten_shot_quadrants_players
+```
+
+```{r Shooting Percentages Q1}
+big_ten_shot_data_quadrant1 <- big_ten_shot_data %>% filter(shot_quadrant == "Q1")
+
+big_ten_shot_data_quadrant1_players <- as.data.frame.matrix(table(big_ten_shot_data_quadrant1$shooter, big_ten_shot_data_quadrant1$shot_outcome)) %>% filter(made + missed >= 15) %>% mutate(shooting_percent = (made/(made + missed)) * 100)
+
+view(big_ten_shot_data_quadrant1_players)
+```
+
+```{r Shooting Percentages Q1 Distribution}
+ggplot(data = big_ten_shot_data_quadrant1_players, aes(x = shooting_percent)) + 
+  geom_histogram()
+
+round(quantile(big_ten_shot_data_quadrant1_players$shooting_percent, c(.2, .4, .6, .8)), digits = 0)
 ```
 
 
